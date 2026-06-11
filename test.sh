@@ -1,3 +1,3 @@
 #!/bin/bash
-echo "Running tests... Success!"
-exit 0
+echo "Running tests... Critical Failure!"
+exit 1
