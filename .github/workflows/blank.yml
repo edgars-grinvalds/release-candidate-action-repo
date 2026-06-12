@@ -1,0 +1,54 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "release" branch
+  workflow_dispatch:
+    inputs:
+      prefix-keys:
+        description: 'Comma-separated prefixes (e.g., KEY-, BUG-)'
+        required: false
+        type: string
+        default: 'KEY-1,KEY-2,KEY-3,KEY-5'
+      source-branch:
+        description: 'Branch containing the new commits'
+        required: true
+        type: string
+        default: 'development'
+      target-branch:
+        description: 'Branch to build the release upon'
+        required: true
+        type: string
+        default: 'release'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Required to allow your Action to push branches and create gh-pages
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build and Verify Release
+        uses: edgars-grinvalds/release-candidate-action@main
+        with:
+          prefix-keys: ${{ github.event.inputs.prefix-keys }}
+          source-branch: ${{ github.event.inputs.source-branch }}
+          target-branch: ${{ github.event.inputs.target-branch }}
+          
+          # Pass the standard token so the Action has API access
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          
+          # Optional: Leave empty to skip tests, or hardcode your test workflow
+          test-workflow-id: ''
+
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
