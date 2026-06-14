@@ -1,0 +1,16 @@
+[
+  {
+    "uuid": "dc3e64f6-b80f-4a74-b884-f1ba74b888f9",
+    "date": "2026-06-14T15:22:24.627Z",
+    "branch": "candidate/dc3e64f6-b80f-4a74-b884-f1ba74b888f9",
+    "keys": [
+      "KEY-1",
+      "KEY-2",
+      "KEY-3",
+      "KEY-5"
+    ],
+    "applied": 3,
+    "conflicts": 1,
+    "failures": 0
+  }
+]
