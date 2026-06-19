@@ -102,43 +102,58 @@
         }
     </style>
         </head>
-        <body style="max-width: 1100px;">
+        <body>
+            <a href="index.html" class="back-btn">← Back to Dashboard</a>
+            
             <h1>Release Candidate Summary</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Targeted Keys</th>
-                        <th>Branch</th>
-                        <th>Deploy Status</th>
-                        <th>Report</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                        <tr>
-                            <td style="white-space: nowrap;">6/19/2026 09:01 AM</td>
-                            <td style="max-width: 300px; line-height: 1.8;"><code>KEY-1</code>, <code>KEY-2</code>, <code>KEY-3</code>, <code>KEY-5</code></td>
-                            <td><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/tree/candidate/de4afd09-8077-492e-a56b-2a9099546bde" target="_blank" style="text-decoration:none;"><code>de4afd09-8077-492e-a56b-2a9099546bde</code></a></td>
-                            <td>
-                                <div style="margin-bottom: 6px;"><span class="type-partial">Partial Deploy</span></div>
-                                <span class="status-warn">1 Conflicts, 0 Fails</span>
-                            </td>
-                            <td><strong><a href="report-de4afd09-8077-492e-a56b-2a9099546bde.html">View Details →</a></strong></td>
-                        </tr>
+            
+            <div class="deploy-banner banner-partial">🟠 PARTIAL DEPLOY (Review Required)</div>
+            
+            <div class="header-meta">
+                <strong>Targeted Keys:</strong> <code>KEY-1</code>, <code>KEY-2</code>, <code>KEY-3</code>, <code>KEY-5</code><br>
+                <strong style="display:inline-block; margin-top:6px;">Candidate Branch:</strong> <a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/tree/candidate/de4afd09-8077-492e-a56b-2a9099546bde" target="_blank" style="text-decoration:none;"><code>candidate/de4afd09-8077-492e-a56b-2a9099546bde</code></a>
+            </div>
+            
+            <h3>✅ Applied Commits (3)</h3>
+            <div class="commit-list"><div class="commit-item"><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/2ecfbd12e8cafe9ea9de575affe8fc4afef3aabf" target="_blank" class="commit-link"><code>2ECFBD1</code></a> KEY-1: Add initial test script (Passes)</div><div class="commit-item"><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/e586b0f2f4d1396b05add7d7d0c93e94fca19f37" target="_blank" class="commit-link"><code>E586B0F</code></a> KEY-2: Add project readme</div><div class="commit-item"><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/2005cca6157688cc20988c10f9ce0515cb204f4f" target="_blank" class="commit-link"><code>2005CCA</code></a> KEY-3: Update test script logic (Fails)</div></div>
+            
+            <h3>⏭️ Skipped Commits</h3>
+            <div class="commit-list"><div class="commit-item"><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/a100419c3e2dee36a058abada551330b0e797cac" target="_blank" class="commit-link"><code>A100419</code></a> KEY-4: Amend readme with architecture notes <span class="badge badge-ignored">Ignored (No Match)</span></div><div class="commit-item"><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/9b976dfa371cb9ebfe7bfd63d12f00e1d2e6ba91" target="_blank" class="commit-link"><code>9B976DF</code></a> KEY-5: Amend readme with deployment steps <span class="badge badge-conflict">Pruned (Merge Conflict)</span></div></div>
+            
+            <h3>⚠️ Invalidated Tickets (Merge Conflicts)</h3>
+            
+            <div class="conflict-card">
+                <div class="commit-header">
+                    <strong>🚨 Pipeline Reset - Bad Keys Pruned: <code>KEY-5</code></strong>
+                    <br>
+                    <small>Conflict on: <a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/9b976dfa371cb9ebfe7bfd63d12f00e1d2e6ba91" target="_blank" class="commit-link"><code>9B976DF</code></a> KEY-5: Amend readme with deployment steps</small>
+                </div>
+                <div class="conflict-body">
+                    <div class="files-column">
+                        <h4>Conflicted Files (Branch View)</h4>
+                        <div class="conflict-items">
+                            <div class="commit-item"><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/blob/conflict-data/9B976DF-de4afd09-8077-492e-a56b-2a9099546bde/readme.md" target="_blank" class="file-link">📄 readme.md</a></div>
+                        </div>
+                    </div>
+                    <div class="fixes-column">
+                        <h4>Potential Missing Dependencies (Commit View)</h4>
                         
-                        <tr>
-                            <td style="white-space: nowrap;">6/14/2026 03:22 PM</td>
-                            <td style="max-width: 300px; line-height: 1.8;"><code>KEY-1</code>, <code>KEY-2</code>, <code>KEY-3</code>, <code>KEY-5</code></td>
-                            <td><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/tree/candidate/dc3e64f6-b80f-4a74-b884-f1ba74b888f9" target="_blank" style="text-decoration:none;"><code>dc3e64f6-b80f-4a74-b884-f1ba74b888f9</code></a></td>
-                            <td>
-                                <div style="margin-bottom: 6px;"><span class="type-partial">Partial Deploy</span></div>
-                                <span class="status-warn">1 Conflicts, 0 Fails</span>
-                            </td>
-                            <td><strong><a href="report-dc3e64f6-b80f-4a74-b884-f1ba74b888f9.html">View Details →</a></strong></td>
-                        </tr>
+                            <div class="conflict-items">
+                                <div class="commit-item" style="margin-bottom: 12px;">
+                                    <strong><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/a100419c3e2dee36a058abada551330b0e797cac" target="_blank" class="commit-link"><code>A100419</code></a></strong> KEY-4: Amend readme with architecture notes<br>
+                                    <div style="margin-top: 6px;">
+                                        <small><strong>Conflicting:</strong> 
+                                            <a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/blob/a100419c3e2dee36a058abada551330b0e797cac/readme.md" target="_blank" class="file-link">readme.md</a>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
                         
-                </tbody>
-            </table>
+                    </div>
+                </div>
+            </div>
+        
+            
+            
         </body>
     </html>
