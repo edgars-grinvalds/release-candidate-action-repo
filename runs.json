@@ -1,5 +1,19 @@
 [
   {
+    "uuid": "f4004ca8-9096-42c9-9236-d4c8b1f7283c",
+    "date": "2026-10-07T11:45:56.364Z",
+    "branch": "candidate/f4004ca8-9096-42c9-9236-d4c8b1f7283c",
+    "keys": [
+      "KEY-3",
+      "KEY-4",
+      "KEY-5",
+      "KEY-6"
+    ],
+    "applied": 0,
+    "conflicts": 3,
+    "failures": 0
+  },
+  {
     "uuid": "b764c3a5-3b80-469a-b32c-a8a438a7c8e3",
     "date": "2026-10-07T11:41:41.873Z",
     "branch": "candidate/b764c3a5-3b80-469a-b32c-a8a438a7c8e3",

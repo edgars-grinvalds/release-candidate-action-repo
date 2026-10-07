@@ -1,0 +1,230 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Release Candidate Summary</title>
+            <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 40px auto; padding: 0 20px; color: #333; }
+        h1 { border-bottom: 2px solid #eaecef; padding-bottom: .3em; margin-bottom: 20px; }
+        h2, h3, h4 { color: #0366d6; }
+        
+        .deploy-banner { padding: 12px 15px; border-radius: 6px; font-weight: bold; margin-bottom: 25px; text-align: center; font-size: 16px; letter-spacing: 0.5px; text-transform: uppercase; }
+        .banner-full { background: #dcffe4; color: #1a7f37; border: 1px solid #4ac26b; }
+        .banner-partial { background: #fff8c5; color: #9a6700; border: 1px solid #e6cc28; }
+        .banner-failed { background: #ffebe9; color: #cf222e; border: 1px solid #ff8182; }
+        .banner-empty { background: #f6f8fa; color: #586069; border: 1px solid #e1e4e8; }
+        
+        .header-meta { background: #f1f8ff; border: 1px solid #c8e1ff; padding: 15px 20px; border-radius: 6px; margin-bottom: 20px; font-size: 14px; }
+        .commit-list { background: #f6f8fa; padding: 15px 20px; border-radius: 6px; }
+        .commit-item { margin-bottom: 8px; font-family: monospace; font-size: 14px; padding-left: 0; }
+        .empty { color: #586069; font-style: italic; }
+        
+        a { color: #0366d6; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        a.commit-link code { color: #0366d6; cursor: pointer; }
+        a.commit-link:hover code { text-decoration: underline; color: #005cc5; }
+        
+        a.key-link code { color: #0366d6; background: #fff; border: 1px solid #c8e1ff; padding: 2px 5px; border-radius: 4px; transition: all 0.2s;}
+        a.key-link:hover code { background: #0366d6; color: #fff; text-decoration: none;}
+        
+        a.file-link { color: #24292e; transition: color 0.2s; }
+        a.file-link:hover { text-decoration: underline; color: #0366d6; }
+        
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-left: 8px; vertical-align: middle; font-family: -apple-system, sans-serif; }
+        .badge-ignored { background: #e1e4e8; color: #586069; }
+        .badge-conflict { background: #ffdce0; color: #b31d28; }
+        .badge-failed { background: #fff5b1; color: #b08800; }
+        
+        .conflict-card { border: 1px solid #d73a49; border-radius: 6px; margin: 15px 0 15px 0; overflow: hidden; }
+        .commit-header { background: #ffeef0; padding: 10px 15px; border-bottom: 1px solid #d73a49; color: #b31d28; font-family: monospace;}
+        .commit-header a.commit-link code { color: #b31d28; text-decoration: underline; }
+        .conflict-body { display: flex; background: #fff; }
+        .files-column, .fixes-column { padding: 15px; flex: 1; }
+        .files-column { border-right: 1px solid #eaecef; background: #fdf8f8; }
+        .fixes-column { background: #f1f8ff; }
+        .conflict-card h4 { margin-top: 0; font-size: 13px; text-transform: uppercase; color: #586069; border-bottom: 1px solid #eaecef; padding-bottom: 5px;}
+        .conflict-items { padding-left: 0; margin: 0; }
+        .conflict-card small { display: block; color: #586069; margin-top: 2px; font-family: monospace; font-size: 11px;}
+        
+        .back-btn { display: inline-block; margin-bottom: 20px; font-size: 14px; text-decoration: none; color: #0366d6; }
+        
+        table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-radius: 6px; overflow: hidden;}
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eaecef; font-size: 14px; vertical-align: top; }
+        th { background: #f6f8fa; font-weight: 600; color: #24292e; text-transform: uppercase; font-size: 12px; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background: #fdfdfd; }
+        .status-clean { color: #28a745; font-weight: 600; background: #eafeea; padding: 4px 8px; border-radius: 12px; font-size: 12px;}
+        .status-warn { color: #b31d28; font-weight: 600; background: #ffeef0; padding: 4px 8px; border-radius: 12px; font-size: 12px;}
+        .type-full { color: #1a7f37; font-weight: bold; font-size: 13px; text-transform: uppercase; }
+        .type-partial { color: #9a6700; font-weight: bold; font-size: 13px; text-transform: uppercase; }
+        .type-failed { color: #cf222e; font-weight: bold; font-size: 13px; text-transform: uppercase; }
+        .type-empty { color: #586069; font-weight: bold; font-size: 13px; text-transform: uppercase; }
+
+        @media (prefers-color-scheme: dark) {
+            body { background: #0d1117; color: #c9d1d9; }
+            h1, h2, h3, h4 { color: #58a6ff; }
+            h1 { border-color: #30363d; }
+            
+            .header-meta, .commit-list, table { background: #161b22; border-color: #30363d; color: #c9d1d9; }
+            th { background: #21262d; color: #c9d1d9; }
+            tr:hover { background: #21262d; }
+            th, td { border-color: #30363d; }
+            
+            .conflict-body, .fixes-column { background: #0d1117; }
+            .files-column { background: #161b22; border-color: #30363d; }
+            .conflict-card { border-color: #b31d28; }
+            .commit-header { background: #2c0e12; border-bottom: 1px solid #b31d28; color: #ff7b72; }
+            .commit-header a.commit-link code { color: #ff7b72; }
+            
+            a, .back-btn { color: #58a6ff; }
+            a.commit-link code { color: #58a6ff; }
+            a.file-link { color: #c9d1d9; }
+            a.file-link:hover { color: #58a6ff; }
+            a.key-link code { background: #21262d; border-color: #30363d; color: #58a6ff; }
+            a.key-link:hover code { background: #58a6ff; color: #0d1117; }
+            
+            .banner-full { background: #135d26; color: #fff; border-color: #2ea043; }
+            .banner-partial { background: #9e6a03; color: #fff; border-color: #d29922; }
+            .banner-failed { background: #a40e26; color: #fff; border-color: #f85149; }
+            .banner-empty { background: #21262d; color: #c9d1d9; border-color: #30363d; }
+            
+            .status-clean { background: #238636; color: #fff; }
+            .status-warn { background: #da3633; color: #fff; }
+            
+            .badge-ignored { background: #30363d; color: #c9d1d9; }
+            .badge-conflict { background: #da3633; color: #fff; }
+            
+            .type-full { color: #3fb950; }
+            .type-partial { color: #d29922; }
+            .type-failed { color: #f85149; }
+            .type-empty { color: #8b949e; }
+        }
+    </style>
+        </head>
+        <body>
+            <a href="index.html" class="back-btn">← Back to Dashboard</a>
+            
+            <h1>Release Candidate Summary</h1>
+            
+            <div class="deploy-banner banner-failed">🔴 FAILED DEPLOY (Cannot Release)</div>
+            
+            <div class="header-meta">
+                <strong>Targeted Keys:</strong> <code>KEY-3</code>, <code>KEY-4</code>, <code>KEY-5</code>, <code>KEY-6</code><br>
+                <strong style="display:inline-block; margin-top:6px;">Candidate Branch:</strong> <a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/tree/candidate/f4004ca8-9096-42c9-9236-d4c8b1f7283c" target="_blank" style="text-decoration:none;"><code>candidate/f4004ca8-9096-42c9-9236-d4c8b1f7283c</code></a>
+            </div>
+            
+            <h3>✅ Applied Commits (0)</h3>
+            <div class="commit-list"><div class="empty">None</div></div>
+            
+            <h3>⏭️ Skipped Commits</h3>
+            <div class="commit-list"><div class="commit-item"><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/2ecfbd12e8cafe9ea9de575affe8fc4afef3aabf" target="_blank" class="commit-link"><code>2ECFBD1</code></a> KEY-1: Add initial test script (Passes) <span class="badge badge-ignored">Ignored (No Match)</span></div><div class="commit-item"><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/e586b0f2f4d1396b05add7d7d0c93e94fca19f37" target="_blank" class="commit-link"><code>E586B0F</code></a> KEY-2: Add project readme <span class="badge badge-ignored">Ignored (No Match)</span></div><div class="commit-item"><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/2005cca6157688cc20988c10f9ce0515cb204f4f" target="_blank" class="commit-link"><code>2005CCA</code></a> KEY-3: Update test script logic (Fails) <span class="badge badge-conflict">Pruned (Merge Conflict)</span></div><div class="commit-item"><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/a100419c3e2dee36a058abada551330b0e797cac" target="_blank" class="commit-link"><code>A100419</code></a> KEY-4: Amend readme with architecture notes <span class="badge badge-conflict">Pruned (Merge Conflict)</span></div><div class="commit-item"><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/9b976dfa371cb9ebfe7bfd63d12f00e1d2e6ba91" target="_blank" class="commit-link"><code>9B976DF</code></a> KEY-5: Amend readme with deployment steps <span class="badge badge-conflict">Pruned (Merge Conflict)</span></div></div>
+            
+            <h3>⚠️ Invalidated Tickets (Merge Conflicts)</h3>
+            
+            <div class="conflict-card">
+                <div class="commit-header">
+                    <strong>🚨 Pipeline Reset - Bad Keys Pruned: <code>KEY-3</code></strong>
+                    <br>
+                    <small>Conflict on: <a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/2005cca6157688cc20988c10f9ce0515cb204f4f" target="_blank" class="commit-link"><code>2005CCA</code></a> KEY-3: Update test script logic (Fails)</small>
+                </div>
+                <div class="conflict-body">
+                    <div class="files-column">
+                        <h4>Conflicted Files (Branch View)</h4>
+                        <div class="conflict-items">
+                            <div class="commit-item"><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/blob/conflict-data/2005CCA-f4004ca8-9096-42c9-9236-d4c8b1f7283c/test.sh" target="_blank" class="file-link">📄 test.sh</a></div>
+                        </div>
+                    </div>
+                    <div class="fixes-column">
+                        <h4>Potential Missing Dependencies (Commit View)</h4>
+                        
+                            <div class="conflict-items">
+                                <div class="commit-item" style="margin-bottom: 12px;">
+                                    <strong><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/2ecfbd12e8cafe9ea9de575affe8fc4afef3aabf" target="_blank" class="commit-link"><code>2ECFBD1</code></a></strong> KEY-1: Add initial test script (Passes)<br>
+                                    <div style="margin-top: 6px;">
+                                        <small><strong>Conflicting:</strong> 
+                                            <a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/blob/2ecfbd12e8cafe9ea9de575affe8fc4afef3aabf/test.sh" target="_blank" class="file-link">test.sh</a>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                    </div>
+                </div>
+            </div>
+        
+            <div class="conflict-card">
+                <div class="commit-header">
+                    <strong>🚨 Pipeline Reset - Bad Keys Pruned: <code>KEY-4</code></strong>
+                    <br>
+                    <small>Conflict on: <a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/a100419c3e2dee36a058abada551330b0e797cac" target="_blank" class="commit-link"><code>A100419</code></a> KEY-4: Amend readme with architecture notes</small>
+                </div>
+                <div class="conflict-body">
+                    <div class="files-column">
+                        <h4>Conflicted Files (Branch View)</h4>
+                        <div class="conflict-items">
+                            <div class="commit-item"><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/blob/conflict-data/A100419-f4004ca8-9096-42c9-9236-d4c8b1f7283c/readme.md" target="_blank" class="file-link">📄 readme.md</a></div>
+                        </div>
+                    </div>
+                    <div class="fixes-column">
+                        <h4>Potential Missing Dependencies (Commit View)</h4>
+                        
+                            <div class="conflict-items">
+                                <div class="commit-item" style="margin-bottom: 12px;">
+                                    <strong><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/e586b0f2f4d1396b05add7d7d0c93e94fca19f37" target="_blank" class="commit-link"><code>E586B0F</code></a></strong> KEY-2: Add project readme<br>
+                                    <div style="margin-top: 6px;">
+                                        <small><strong>Conflicting:</strong> 
+                                            <a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/blob/e586b0f2f4d1396b05add7d7d0c93e94fca19f37/readme.md" target="_blank" class="file-link">readme.md</a>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                    </div>
+                </div>
+            </div>
+        
+            <div class="conflict-card">
+                <div class="commit-header">
+                    <strong>🚨 Pipeline Reset - Bad Keys Pruned: <code>KEY-5</code></strong>
+                    <br>
+                    <small>Conflict on: <a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/9b976dfa371cb9ebfe7bfd63d12f00e1d2e6ba91" target="_blank" class="commit-link"><code>9B976DF</code></a> KEY-5: Amend readme with deployment steps</small>
+                </div>
+                <div class="conflict-body">
+                    <div class="files-column">
+                        <h4>Conflicted Files (Branch View)</h4>
+                        <div class="conflict-items">
+                            <div class="commit-item"><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/blob/conflict-data/9B976DF-f4004ca8-9096-42c9-9236-d4c8b1f7283c/readme.md" target="_blank" class="file-link">📄 readme.md</a></div>
+                        </div>
+                    </div>
+                    <div class="fixes-column">
+                        <h4>Potential Missing Dependencies (Commit View)</h4>
+                        
+                            <div class="conflict-items">
+                                <div class="commit-item" style="margin-bottom: 12px;">
+                                    <strong><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/e586b0f2f4d1396b05add7d7d0c93e94fca19f37" target="_blank" class="commit-link"><code>E586B0F</code></a></strong> KEY-2: Add project readme<br>
+                                    <div style="margin-top: 6px;">
+                                        <small><strong>Conflicting:</strong> 
+                                            <a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/blob/e586b0f2f4d1396b05add7d7d0c93e94fca19f37/readme.md" target="_blank" class="file-link">readme.md</a>
+                                        </small>
+                                    </div>
+                                </div>
+                            
+                                <div class="commit-item" style="margin-bottom: 12px;">
+                                    <strong><a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/commit/a100419c3e2dee36a058abada551330b0e797cac" target="_blank" class="commit-link"><code>A100419</code></a></strong> KEY-4: Amend readme with architecture notes<br>
+                                    <div style="margin-top: 6px;">
+                                        <small><strong>Conflicting:</strong> 
+                                            <a href="https://github.com/edgars-grinvalds/release-candidate-action-repo/blob/a100419c3e2dee36a058abada551330b0e797cac/readme.md" target="_blank" class="file-link">readme.md</a>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                    </div>
+                </div>
+            </div>
+        
+            
+            
+        </body>
+    </html>
